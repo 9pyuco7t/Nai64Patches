@@ -75,6 +75,7 @@ Trigger+Up_smali/
 SESSION_SUMMARY.md
 docs/superpowers/
 scripts/
+!.github/scripts/
 com/
 build/
 tests/
