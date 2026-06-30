@@ -2,6 +2,7 @@ package patches.universal.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import patches.universal.ads.util.fireRewardedAdCallbacks
 
 @Suppress("unused")
 val adsFreeRewardsPatch = bytecodePatch(
@@ -57,9 +58,23 @@ val adsFreeRewardsPatch = bytecodePatch(
             return@execute
         }
 
-        // ── Native MAX: silently skip (no forwardUnityEvent equivalent) ──
-        // showAd() NOP causes crashes because the game expects callbacks.
-        // For now, these games rely on NoAds for ad blocking.
+        // ── Strategy 2: Native MAX (non-Unity) ──
+        val nativeReady = MaxRewardedAdIsReadyFingerprint.methodOrNull
+        val nativeShow = MaxRewardedAdShowAdFingerprint.methodOrNull
+        if (nativeReady != null && nativeShow != null) {
+            nativeReady.addInstructions(0, """
+                const/4 v0, 0x1
+                return v0
+            """.trimIndent())
+
+            // Use reflection to find the MaxRewardedAdListener field and fire
+            // callbacks directly (onAdDisplayed → onRewardedVideoStarted →
+            // onUserRewarded → onRewardedVideoCompleted → onAdHidden).
+            // This avoids crashes from simply NOP'ing showAd().
+            nativeShow.addInstructions(0, fireRewardedAdCallbacks())
+            return@execute
+        }
+
         // ── No supported SDK found — silently skip ──
     }
 }

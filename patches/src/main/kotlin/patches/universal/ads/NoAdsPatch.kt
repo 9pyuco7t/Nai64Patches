@@ -1,7 +1,9 @@
 package patches.universal.ads
 
 import app.morphe.patcher.extensions.InstructionExtensions.addInstruction
+import app.morphe.patcher.extensions.InstructionExtensions.addInstructions
 import app.morphe.patcher.patch.bytecodePatch
+import patches.universal.ads.util.fireHiddenCallbacks
 
 @Suppress("unused")
 val noAdsPatch = bytecodePatch(
@@ -11,19 +13,23 @@ val noAdsPatch = bytecodePatch(
     default = false,
 ) {
     execute {
-        var patched = 0
-
         // ── MAX Unity wrapper ──
-        ShowInterstitialFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        ShowAppOpenAdFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        ShowBannerFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        ShowMRecFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        StartBannerAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        StartMRecAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
+        ShowInterstitialFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
+        ShowAppOpenAdFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
+        ShowBannerFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
+        ShowMRecFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
+        StartBannerAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
+        StartMRecAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
 
         // ── Native MAX (non-Unity) ──
-        MaxInterstitialAdShowAdFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        MaxAppOpenAdShowAdFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
-        MaxAdViewStartAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void"); patched++ }
+        // Reflection-based callback invocation to avoid crashes from NOP'ing showAd().
+        // The game expects onAdDisplayed + onAdHidden callbacks to proceed.
+        MaxInterstitialAdShowAdFingerprint.methodOrNull?.let {
+            it.addInstructions(0, fireHiddenCallbacks("Lcom/applovin/mediation/ads/MaxInterstitialAd;"))
+        }
+        MaxAppOpenAdShowAdFingerprint.methodOrNull?.let {
+            it.addInstructions(0, fireHiddenCallbacks("Lcom/applovin/mediation/ads/MaxAppOpenAd;"))
+        }
+        MaxAdViewStartAutoRefreshFingerprint.methodOrNull?.let { it.addInstruction(0, "return-void") }
     }
 }
