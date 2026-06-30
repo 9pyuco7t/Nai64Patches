@@ -14,7 +14,8 @@ val installSourceSpoofPatch = bytecodePatch(
     default = true,
 ) {
     execute {
-        PerformLocalInstallerCheckFingerprint.method.addInstructions(0, listOf(
+        val method = PerformLocalInstallerCheckFingerprint.methodOrNull ?: return@execute
+        method.addInstructions(0, listOf(
             BuilderInstruction11n(Opcode.CONST_4, 0, 1),
             BuilderInstruction11x(Opcode.RETURN, 0),
         ))
