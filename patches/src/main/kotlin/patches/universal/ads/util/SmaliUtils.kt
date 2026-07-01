@@ -23,11 +23,11 @@ fun fireRewardedAdCallbacks(): String = """
     const-class v5, Lcom/applovin/mediation/MaxRewardedAdListener;
     invoke-virtual {v5, v4}, Ljava/lang/Class;->isAssignableFrom(Ljava/lang/Class;)Z
     move-result v6
-    if-eqz v6, :found
+    if-nez v6, :found
     const-class v5, Lcom/applovin/mediation/MaxAdListener;
     invoke-virtual {v5, v4}, Ljava/lang/Class;->isAssignableFrom(Ljava/lang/Class;)Z
     move-result v6
-    if-eqz v6, :found
+    if-nez v6, :found
     add-int/lit8 v2, v2, 0x1
     goto :loop_ck
     :found
@@ -35,7 +35,7 @@ fun fireRewardedAdCallbacks(): String = """
     invoke-virtual {v3, v4}, Ljava/lang/reflect/Field;->setAccessible(Z)V
     invoke-virtual {v3, p0}, Ljava/lang/reflect/Field;->get(Ljava/lang/Object;)Ljava/lang/Object;
     move-result-object v4
-    if-nez v4, :loop_done
+    if-eqz v4, :loop_done
     check-cast v4, Lcom/applovin/mediation/MaxRewardedAdListener;
     invoke-interface {v4, p0}, Lcom/applovin/mediation/MaxRewardedAdListener;->onAdDisplayed(Lcom/applovin/mediation/MaxAd;)V
     invoke-interface {v4, p0}, Lcom/applovin/mediation/MaxRewardedAdListener;->onRewardedVideoStarted(Lcom/applovin/mediation/MaxAd;)V
@@ -71,7 +71,7 @@ fun fireHiddenCallbacks(className: String): String = """
     const-class v5, Lcom/applovin/mediation/MaxAdListener;
     invoke-virtual {v5, v4}, Ljava/lang/Class;->isAssignableFrom(Ljava/lang/Class;)Z
     move-result v6
-    if-eqz v6, :found
+    if-nez v6, :found
     add-int/lit8 v2, v2, 0x1
     goto :loop_ck
     :found
@@ -79,7 +79,7 @@ fun fireHiddenCallbacks(className: String): String = """
     invoke-virtual {v3, v4}, Ljava/lang/reflect/Field;->setAccessible(Z)V
     invoke-virtual {v3, p0}, Ljava/lang/reflect/Field;->get(Ljava/lang/Object;)Ljava/lang/Object;
     move-result-object v4
-    if-nez v4, :loop_done
+    if-eqz v4, :loop_done
     check-cast v4, Lcom/applovin/mediation/MaxAdListener;
     invoke-interface {v4, p0}, Lcom/applovin/mediation/MaxAdListener;->onAdDisplayed(Lcom/applovin/mediation/MaxAd;)V
     invoke-interface {v4, p0}, Lcom/applovin/mediation/MaxAdListener;->onAdHidden(Lcom/applovin/mediation/MaxAd;)V
