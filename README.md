@@ -6,7 +6,7 @@ Universal Morphe patches for Android games using AppLovin MAX SDK.
 
 | Method | URL |
 |--------|-----|
-| Deep link | [morphe.software/add-source?github=Nai64/Nai64Patches](https://morphe.software/add-source?github=9pyuco7t/Nai64Patches) |
+| Deep link | [morphe.software/add-source?github=9pyuco7t/Nai64Patches](https://morphe.software/add-source?github=9pyuco7t/Nai64Patches) |
 | Manual | `https://github.com/Nai64/Nai64Patches` |
 
 ## Patches
