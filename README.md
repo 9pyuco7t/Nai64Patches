@@ -18,3 +18,4 @@ Universal Morphe patches for Android games using AppLovin MAX SDK.
 | **Spoof Play Store Install Source** | Makes the app think it was installed from Google Play. Prevents Pairip license check from failing. |
 
 > All patches are **opt-in** — enable them individually in the Morphe app.
+test
