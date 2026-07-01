@@ -8,6 +8,7 @@ package patches.universal.ads.util
  *
  * Designed to replace showAd() in MaxRewardedAd without crashing
  * the game (game gets the reward callbacks it expects).
+ * test
  */
 fun fireRewardedAdCallbacks(): String = """
     const-class v0, Lcom/applovin/mediation/ads/MaxRewardedAd;
