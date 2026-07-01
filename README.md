@@ -17,3 +17,4 @@ Universal Morphe patches for Android games using AppLovin MAX SDK.
 | **No Ads** | Blocks all non-rewarded ads: interstitial, banner, app open, MREC. Supports MAX Unity and native MAX. |
 | **Spoof Play Store Install Source** | Makes the app think it was installed from Google Play Store. Prevents Pairip license check from failing. |
 test
+fix
